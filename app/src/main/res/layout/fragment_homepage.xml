@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <!--标题栏-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:background="#f93939"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginTop="1dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/img_zxing"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/a_s" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="扫啊扫"
+                        android:textColor="#fcf6f6"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <!--输入框-->
+                <LinearLayout
+                    android:layout_width="280dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/sou_backgroud"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="5dp"
+                        android:src="@drawable/a_4" />
+
+                    <TextView
+                        android:id="@+id/tv_inputSearch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="请输入搜索内容"
+                        android:textSize="16sp" />
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="90dp"
+                        android:src="@drawable/root" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginTop="1dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:src="@drawable/a9x" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="消息"
+                        android:textColor="#fcf6f6"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <!--banner轮播图-->
+            <com.youth.banner.Banner
+                android:id="@+id/ad_banner"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"></com.youth.banner.Banner>
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvClass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+            <!--<RelativeLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="30dp"-->
+            <!--android:background="@drawable/sou_backgroud"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:layout_marginTop="3dp"-->
+            <!--&gt;-->
+
+            <!--<TextView-->
+            <!--android:id="@+id/kuai"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="京东快报"-->
+            <!--android:textColor="#666666"-->
+            <!--android:layout_marginLeft="3dp"-->
+            <!--android:textSize="14sp"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--/>-->
+
+            <!--<com.sunfusheng.marqueeview.MarqueeView-->
+            <!--android:layout_toRightOf="@id/kuai"-->
+            <!--android:id="@+id/marqueeView"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--app:mvAnimDuration="1000"-->
+            <!--app:mvDirection="bottom_to_top"-->
+            <!--app:mvInterval="3000"-->
+            <!--app:mvTextColor="#000"-->
+            <!--app:mvTextSize="14sp"-->
+            <!--app:mvSingleLine="true"/>-->
+
+            <!--<view-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_marginRight="50dp"-->
+            <!--android:layout_width="1dp"-->
+            <!--android:layout_height="25dp"/>-->
+
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="更多"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_marginRight="4dp"-->
+            <!--android:layout_gravity="center_vertical"-->
+            <!--/>-->
+
+            <!--</RelativeLayout>-->
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_margin="3dp"
+                android:background="@drawable/sou_backgroud">
+
+                <TextView
+                    android:id="@+id/tvJD"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="京东快报" />
+
+                <LinearLayout
+                    android:id="@+id/llMore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="10dp"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:background="#000000"></View>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:text="更多" />
+                </LinearLayout>
+
+                <com.sunfusheng.marqueeview.MarqueeView
+                    android:id="@+id/marqueeView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:layout_toLeftOf="@id/llMore"
+                    android:layout_toRightOf="@id/tvJD"
+                    app:mvAnimDuration="1000"
+                    app:mvDirection="bottom_to_top"
+                    app:mvInterval="3000"
+                    app:mvSingleLine="true"
+                    app:mvTextColor="#000000"
+                    app:mvTextSize="14sp" />
+            </RelativeLayout>
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvSecKill"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="26dp"
+                android:background="#e8e8e8"
+                android:gravity="center"
+                android:text="为您推荐"
+                android:textSize="16sp" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvRecommend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</ScrollView>
