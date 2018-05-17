@@ -8,6 +8,8 @@ import com.example.jingdong.net.CatagoryApiService;
 import com.example.jingdong.net.ChildCatagoryApi;
 import com.example.jingdong.net.ChildCatagoryApiService;
 import com.example.jingdong.net.MyInterceptor;
+import com.example.jingdong.net.NetApi;
+import com.example.jingdong.net.NetApiService;
 
 import java.sql.Time;
 import java.util.concurrent.TimeUnit;
@@ -66,6 +68,18 @@ public class HttpModule {
                 .build();
         ChildCatagoryApiService childCatagoryApiService = retrofit.create(ChildCatagoryApiService.class);
         return ChildCatagoryApi.getChildCatagoryApi(childCatagoryApiService);
+    }
+
+    @Provides
+    NetApi provideNetApi(OkHttpClient.Builder builder){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Api.BASEURL)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(builder.build())
+                .build();
+        NetApiService netApiService = retrofit.create(NetApiService.class);
+        return NetApi.getNetApi(netApiService);
     }
 
 
