@@ -9,19 +9,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jingdong.R;
+import com.example.jingdong.bean.AdBean;
+import com.example.jingdong.bean.BaseBean;
 import com.example.jingdong.bean.GoodsListBean;
+import com.example.jingdong.component.DaggerHttpComponent;
 import com.example.jingdong.ui.base.BaseActivity;
+import com.example.jingdong.ui.classify.contract.AddCarContract;
+import com.example.jingdong.ui.classify.presenter.AddCarPresenter;
 import com.example.jingdong.util.GlideImageLoader;
+import com.example.jingdong.util.SpUtil;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMWeb;
 import com.youth.banner.Banner;
+import com.youth.banner.listener.OnBannerListener;
 
 import java.util.Arrays;
 
-public class ListDetailsActivity extends BaseActivity implements View.OnClickListener {
+public class ListDetailsActivity extends BaseActivity<AddCarPresenter> implements View.OnClickListener,AddCarContract.View {
 
     private ImageView img_back;
     private ImageView ivShare;
@@ -37,7 +44,13 @@ public class ListDetailsActivity extends BaseActivity implements View.OnClickLis
      * 加入购物车
      */
     private TextView tv_AddCar;
-    private GoodsListBean.DataBean dataBean;
+    private String images;
+    private String title;
+    private int salenum;
+    private double price;
+    private String detailUrl;
+    private int pid;
+
 
     @Override
     public int getContentLayout() {
@@ -49,7 +62,26 @@ public class ListDetailsActivity extends BaseActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         //获得传过来的值
         Intent intent = getIntent();
-        dataBean = (GoodsListBean.DataBean) intent.getSerializableExtra("bean");
+        int flag = intent.getIntExtra("flag", 0);
+        if (flag==1000){
+            AdBean.TuijianBean.ListBean dataBean = (AdBean.TuijianBean.ListBean) intent.getSerializableExtra("bean");
+            images = dataBean.getImages();
+            title = dataBean.getTitle();
+            salenum = dataBean.getSalenum();
+            price = dataBean.getPrice();
+            detailUrl = dataBean.getDetailUrl();
+            pid = dataBean.getPid();
+        }else {
+            GoodsListBean.DataBean dataBean = (GoodsListBean.DataBean) intent.getSerializableExtra("bean");
+            images = dataBean.getImages();
+            title = dataBean.getTitle();
+            salenum = dataBean.getSalenum();
+            price = dataBean.getPrice();
+            detailUrl = dataBean.getDetailUrl();
+            pid = dataBean.getPid();
+        }
+
+
         initView();
         //设置数据
         setData();
@@ -74,23 +106,33 @@ public class ListDetailsActivity extends BaseActivity implements View.OnClickLis
     //注入对象
     @Override
     public void inject() {
-
+        DaggerHttpComponent.builder()
+                .build()
+                .inject(this);
     }
 
     //设置数据
     private void setData() {
-        if (dataBean == null) {
-            return;
-        }
+
         //设置数据
         banner_detail.setImageLoader(new GlideImageLoader());
-        String[] split = dataBean.getImages().split("\\|");
+        String[] split = images.split("\\|");
         banner_detail.setImages(Arrays.asList(split));
         banner_detail.start();
-        tv_goodsTitle.setText(dataBean.getTitle());
-        tv_goodsPrice.setText("原价:" + dataBean.getSalenum());
+        tv_goodsTitle.setText(title);
+        tv_goodsPrice.setText("原价:" + salenum);
         tv_goodsPrice.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG); //中划线
-        tv_VipPrice.setText("现价:" + dataBean.getPrice());
+        tv_VipPrice.setText("现价:" + price);
+        //banner图片点击的轮播
+        banner_detail.setOnBannerListener(new OnBannerListener() {
+            @Override
+            public void OnBannerClick(int position) {
+                Intent intent = new Intent(ListDetailsActivity.this, BannerDetailsActivity.class);
+                intent.putExtra("images",images);
+                intent.putExtra("position",position);
+                startActivity(intent);
+            }
+        });
     }
 
     //设置监听
@@ -107,7 +149,7 @@ public class ListDetailsActivity extends BaseActivity implements View.OnClickLis
             @Override
             public void onClick(View v) {
 
-                UMWeb web = new UMWeb(dataBean.getDetailUrl());
+                UMWeb web = new UMWeb(detailUrl);
 
                 new ShareAction(ListDetailsActivity.this).withMedia(web).setDisplayList(SHARE_MEDIA.QQ, SHARE_MEDIA.QZONE, SHARE_MEDIA.WEIXIN, SHARE_MEDIA.WEIXIN_CIRCLE)
                         .setCallback(shareListener).open();
@@ -125,7 +167,7 @@ public class ListDetailsActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void onStop() {
         super.onStop();
-        banner_detail.stopAutoPlay();
+//        banner_detail.stopAutoPlay();
     }
 
     //点击
@@ -134,12 +176,27 @@ public class ListDetailsActivity extends BaseActivity implements View.OnClickLis
         switch (v.getId()) {
             case R.id.tv_ShopCar:
                 //跳转到购物车页面
-//                Intent intent = new Intent(ListDetailsActivity.this, ShopCarActivity.class);
-//                startActivity(intent);
+                Intent intent = new Intent(ListDetailsActivity.this, ShopCarActivity.class);
+                startActivity(intent);
                 break;
             case R.id.tv_AddCar:
-//                addCar();
+                addCar();
                 break;
+        }
+    }
+
+    //添加购物车
+    private void addCar() {
+        String uid = SpUtil.getString(ListDetailsActivity.this, "uid", "-1");
+        if ("-1".equals(uid)){
+            //没登录跳转到登录页面
+            Intent intent = new Intent(ListDetailsActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }else {
+            //已经登录加购购物车
+            String token = SpUtil.getString(ListDetailsActivity.this, "token", "");
+            //添加购物车
+            mPresenter.addCar(uid,pid+"",token);
         }
     }
 
@@ -181,4 +238,9 @@ public class ListDetailsActivity extends BaseActivity implements View.OnClickLis
             Toast.makeText(ListDetailsActivity.this, "取消了", Toast.LENGTH_LONG).show();
         }
     };
+
+    @Override
+    public void addSuccess(BaseBean baseBean) {
+        Toast.makeText(this, baseBean.getMsg(), Toast.LENGTH_SHORT).show();
+    }
 }

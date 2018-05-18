@@ -15,6 +15,8 @@ import android.widget.Toast;
 import com.dash.zxinglibrary.activity.CaptureActivity;
 import com.dash.zxinglibrary.activity.CodeUtils;
 import com.example.jingdong.R;
+import com.example.jingdong.activity.GoodsListActivity;
+import com.example.jingdong.activity.ListDetailsActivity;
 import com.example.jingdong.activity.MainActivity;
 import com.example.jingdong.activity.WebViewActivity;
 import com.example.jingdong.bean.AdBean;
@@ -152,7 +154,7 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
         rvRecommend.setNestedScrollingEnabled(false);
         rvRecommend.setAdapter(rvRecommendAdapter);
         //设置点击跳转监听
-        rvRecommendAdapter.setOnItemClickListener(new OnItemClickListener() {
+        /*rvRecommendAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 String detailUrl = list.get(position).getDetailUrl();
@@ -165,7 +167,18 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
             public void onItemLongClick(int position) {
 
             }
+        });*/
+
+        rvRecommendAdapter.setOnListItemClickListener(new RvRecommendAdapter.OnListItemClickListener() {
+            @Override
+            public void OnItemClick(AdBean.TuijianBean.ListBean listBean) {
+                Intent intent = new Intent(getActivity(), ListDetailsActivity.class);
+                intent.putExtra("bean",listBean);
+                intent.putExtra("flag",1000);
+                startActivity(intent);
+            }
         });
+
     }
 
     private void showSeckill(AdBean adBean) {

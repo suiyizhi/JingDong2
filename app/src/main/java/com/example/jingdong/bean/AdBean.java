@@ -1,5 +1,6 @@
 package com.example.jingdong.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 public class AdBean {
@@ -83,7 +84,7 @@ public class AdBean {
             this.list = list;
         }
 
-        public static class ListBean {
+        public static class ListBean implements Serializable{
             /**
              * bargainPrice : 11800.0
              * createtime : 2017-10-10T17:33:37

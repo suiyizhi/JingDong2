@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.jingdong.R;
 import com.example.jingdong.bean.AdBean;
+import com.example.jingdong.bean.GoodsListBean;
 import com.example.jingdong.inter.OnItemClickListener;
 
 import java.util.List;
@@ -20,7 +21,6 @@ public class RvRecommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private Context context;
     private List<AdBean.TuijianBean.ListBean> list;
     private LayoutInflater inflater;
-    private OnItemClickListener onItemClickListener;
 
     public RvRecommendAdapter(Context context, List<AdBean.TuijianBean.ListBean> list) {
         this.context = context;
@@ -28,8 +28,13 @@ public class RvRecommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         inflater = LayoutInflater.from(context);
     }
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
-        this.onItemClickListener=onItemClickListener;
+    private OnListItemClickListener onListItemClickListener;
+    public interface OnListItemClickListener {
+        void OnItemClick(AdBean.TuijianBean.ListBean listBean);
+    }
+    //设置点击事件
+    public void setOnListItemClickListener(OnListItemClickListener onListItemClickListener){
+        this.onListItemClickListener=onListItemClickListener;
     }
 
     @NonNull
@@ -52,7 +57,7 @@ public class RvRecommendAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         recommendViewHolder.iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onItemClickListener.onItemClick(position);
+                onListItemClickListener.OnItemClick(list.get(position));
             }
         });
     }
