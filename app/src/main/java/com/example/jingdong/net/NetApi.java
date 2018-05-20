@@ -53,4 +53,9 @@ public class NetApi {
         return netApiService.delCar(uid, pid, token);
     }
 
+    //首页搜索
+    public Observable<GoodsListBean> search(String keywords, String page) {
+        return netApiService.search(keywords, page);
+    }
+
 }

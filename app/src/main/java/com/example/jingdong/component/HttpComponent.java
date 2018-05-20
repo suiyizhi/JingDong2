@@ -3,6 +3,7 @@ package com.example.jingdong.component;
 import com.example.jingdong.activity.GoodsListActivity;
 import com.example.jingdong.activity.ListDetailsActivity;
 import com.example.jingdong.activity.LoginActivity;
+import com.example.jingdong.activity.SearchListActivity;
 import com.example.jingdong.module.HttpModule;
 import com.example.jingdong.ui.classify.ClassifyFragment;
 import com.example.jingdong.ui.homepage.HomePageFragment;
@@ -24,5 +25,7 @@ public interface HttpComponent {
     void inject(ListDetailsActivity listDetailsActivity);
 
     void inject(ShopCarFragment shopCarFragment);
+
+    void inject(SearchListActivity searchListActivity);
 
 }

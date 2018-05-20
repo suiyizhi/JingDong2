@@ -18,6 +18,7 @@ import com.example.jingdong.R;
 import com.example.jingdong.activity.GoodsListActivity;
 import com.example.jingdong.activity.ListDetailsActivity;
 import com.example.jingdong.activity.MainActivity;
+import com.example.jingdong.activity.SearchActivity;
 import com.example.jingdong.activity.WebViewActivity;
 import com.example.jingdong.bean.AdBean;
 import com.example.jingdong.bean.CatagoryBean;
@@ -72,6 +73,14 @@ public class HomePageFragment extends BaseFragment<HomePagePresenter> implements
     public void initView(View view) {
         img_zxing = view.findViewById(R.id.img_zxing);
         tv_inputSearch = view.findViewById(R.id.tv_inputSearch);
+        //跳转到搜索页面
+        tv_inputSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), SearchActivity.class);
+                startActivity(intent);
+            }
+        });
         //设置轮播
         ad_banner = view.findViewById(R.id.ad_banner);
         ad_banner.setImageLoader(new GlideImageLoader());

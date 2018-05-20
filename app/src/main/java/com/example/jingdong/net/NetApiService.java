@@ -46,4 +46,9 @@ public interface NetApiService {
     @FormUrlEncoded
     @POST("product/deleteCart")
     Observable<BaseBean> delCar(@Field("uid") String uid, @Field("pid") String pid, @Field("token") String token);
+
+    //首页的搜索
+    @FormUrlEncoded
+    @POST("product/searchProducts")
+    Observable<GoodsListBean> search(@Field("keywords") String keywords, @Field("page") String page);
 }
