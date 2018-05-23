@@ -6,7 +6,10 @@ import com.example.jingdong.bean.ShopCarBean;
 import com.example.jingdong.bean.UserBean;
 
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.http.Field;
+import retrofit2.http.Part;
 
 public class NetApi {
     private static NetApi netApi;
@@ -56,6 +59,11 @@ public class NetApi {
     //首页搜索
     public Observable<GoodsListBean> search(String keywords, String page) {
         return netApiService.search(keywords, page);
+    }
+
+    //上传头像
+    public Observable<BaseBean> uploadHeader(RequestBody uid, MultipartBody.Part file) {
+        return netApiService.uploadHeader(uid, file);
     }
 
 }

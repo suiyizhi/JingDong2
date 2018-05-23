@@ -6,6 +6,7 @@ import okhttp3.FormBody;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class MyInterceptor implements Interceptor {
@@ -30,23 +31,30 @@ public class MyInterceptor implements Interceptor {
             response = chain.proceed(request);
 
         } else if ("POST".equals(orginalRequest.method())) {
-            //POST请求
-            FormBody.Builder builder = new FormBody.Builder();
+
             //获取原始的请求体里的参数
-            FormBody formBody = (FormBody) orginalRequest.body();
-            //遍历原始的请求体里的参数
-            for (int i = 0; i < formBody.size(); i++) {
-                builder.add(formBody.name(i), formBody.value(i));
+            RequestBody body1 = orginalRequest.body();
+
+            if (body1 instanceof FormBody){
+                //POST请求
+                FormBody.Builder builder = new FormBody.Builder();
+                FormBody formBody= (FormBody) orginalRequest.body();
+                //遍历原始的请求体里的参数
+                for (int i = 0; i < formBody.size(); i++) {
+                    builder.add(formBody.name(i), formBody.value(i));
+                }
+                //添加新参数
+                builder.add("source", "android");
+                FormBody body = builder.build();
+                //添加请求的参数
+                Request request = orginalRequest.newBuilder()
+                        .url(orginalRequest.url())
+                        .post(body)
+                        .build();
+                response = chain.proceed(request);
+            }else {
+                response = chain.proceed(orginalRequest);
             }
-            //添加新参数
-            builder.add("source", "android");
-            FormBody body = builder.build();
-            //添加请求的参数
-            Request request = orginalRequest.newBuilder()
-                    .url(orginalRequest.url())
-                    .post(body)
-                    .build();
-            response = chain.proceed(request);
 
         }
         return response;

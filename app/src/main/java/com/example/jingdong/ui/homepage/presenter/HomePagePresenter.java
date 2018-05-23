@@ -14,14 +14,15 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class HomePagePresenter extends BasePresenter<HomePageContract.View> implements HomePageContract.Presenter{
+public class HomePagePresenter extends BasePresenter<HomePageContract.View> implements HomePageContract.Presenter {
 
     private AdApi adApi;
     private CatagoryApi catagoryApi;
+
     @Inject
-    public HomePagePresenter(AdApi adApi,CatagoryApi catagoryApi) {
+    public HomePagePresenter(AdApi adApi, CatagoryApi catagoryApi) {
         this.adApi = adApi;
-        this.catagoryApi=catagoryApi;
+        this.catagoryApi = catagoryApi;
     }
 
     @Override
@@ -37,7 +38,9 @@ public class HomePagePresenter extends BasePresenter<HomePageContract.View> impl
 
                     @Override
                     public void onNext(AdBean adBean) {
-                        mView.showAd(adBean);
+                        if (mView!=null){
+                            mView.showAd(adBean);
+                        }
                     }
 
                     @Override
@@ -65,7 +68,9 @@ public class HomePagePresenter extends BasePresenter<HomePageContract.View> impl
 
                     @Override
                     public void onNext(CatagoryBean catagoryBean) {
-                        mView.showCatagory(catagoryBean);
+                        if (mView != null) {
+                            mView.showCatagory(catagoryBean);
+                        }
                     }
 
                     @Override

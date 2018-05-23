@@ -56,7 +56,9 @@
         <activity android:name=".activity.LoginActivity" />
         <activity android:name=".activity.ShopCarActivity" />
         <activity android:name=".activity.SearchActivity" />
-        <activity android:name=".activity.SearchListActivity"></activity>
+        <activity android:name=".activity.SearchListActivity" />
+        <activity android:name=".activity.UserInfoActivity"></activity>
+
     </application>
 
 </manifest>

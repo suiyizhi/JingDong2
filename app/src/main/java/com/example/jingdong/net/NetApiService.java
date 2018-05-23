@@ -6,9 +6,13 @@ import com.example.jingdong.bean.ShopCarBean;
 import com.example.jingdong.bean.UserBean;
 
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 
 public interface NetApiService {
 
@@ -51,4 +55,10 @@ public interface NetApiService {
     @FormUrlEncoded
     @POST("product/searchProducts")
     Observable<GoodsListBean> search(@Field("keywords") String keywords, @Field("page") String page);
+
+    //上传头像
+    @Multipart
+    @POST("file/upload")
+    Observable<BaseBean> uploadHeader(@Part("uid") RequestBody uid, @Part MultipartBody.Part file);
+
 }

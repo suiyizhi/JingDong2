@@ -7,6 +7,7 @@ import android.widget.RadioGroup;
 import com.example.jingdong.R;
 import com.example.jingdong.ui.classify.ClassifyFragment;
 import com.example.jingdong.ui.homepage.HomePageFragment;
+import com.example.jingdong.ui.mine.MyFragment;
 import com.example.jingdong.ui.shopcar.ShopCarFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -15,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     private HomePageFragment homePageFragment;
     private ClassifyFragment classifyFragment;
     private ShopCarFragment shopCarFragment;
+    private MyFragment myFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         homePageFragment = new HomePageFragment();
         classifyFragment = new ClassifyFragment();
         shopCarFragment = new ShopCarFragment();
+        myFragment = new MyFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,homePageFragment).commit();
         setListener();
     }
@@ -41,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.rb_shopcar:
                         getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,shopCarFragment).commit();
+                        break;
+                    case R.id.rb_my:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout,myFragment).commit();
                         break;
 
                     default:
