@@ -38,4 +38,11 @@ public class SpUtil {
         //取值
         return sp.getString(key, defValue);
     }
+    //清空sp
+    public static void clearSp(Context context){
+        if (sp == null) {
+            sp = context.getSharedPreferences(CONFIG, Context.MODE_PRIVATE);
+        }
+        sp.edit().clear().commit();
+    }
 }

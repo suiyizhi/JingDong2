@@ -26,13 +26,17 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.jingdong.R;
 import com.example.jingdong.bean.BaseBean;
+import com.example.jingdong.bean.UserInfoBean;
 import com.example.jingdong.component.DaggerHttpComponent;
 import com.example.jingdong.ui.base.BaseActivity;
 import com.example.jingdong.ui.mine.contract.UploadHeaderContract;
 import com.example.jingdong.ui.mine.presenter.UploadHeaderPresenter;
 import com.example.jingdong.util.SpUtil;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 public class UserInfoActivity extends BaseActivity<UploadHeaderPresenter> implements UploadHeaderContract.View, View.OnClickListener {
 
@@ -50,6 +54,8 @@ public class UserInfoActivity extends BaseActivity<UploadHeaderPresenter> implem
     private PopupWindow popupWindow;
     private LinearLayout ll2;
     private Bitmap photo;
+    private String imgcropPath;
+    private File imgcropFile;
 
     @Override
     public int getContentLayout() {
@@ -61,7 +67,9 @@ public class UserInfoActivity extends BaseActivity<UploadHeaderPresenter> implem
         super.onCreate(savedInstanceState);
         initView();
         imgPath = getExternalCacheDir() + File.separator + "header.jpg";
+        imgcropPath = getExternalCacheDir() + File.separator + "header_crop.JPEG";
         imgFile = new File(imgPath);
+        imgcropFile = new File(imgcropPath);
 
         String username = SpUtil.getString(this, "username", "");
         String icon = SpUtil.getString(this, "icon", "");
@@ -87,9 +95,33 @@ public class UserInfoActivity extends BaseActivity<UploadHeaderPresenter> implem
                 .inject(this);
     }
 
+    //上传成功的回调
     @Override
     public void uploadSuccess(BaseBean baseBean) {
+        if (baseBean==null){
+            Toast.makeText(this, "错误", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Toast.makeText(this, baseBean.getMsg(), Toast.LENGTH_SHORT).show();
+        //上传头像后刷新用户信息
+        mPresenter.getUserInfo(SpUtil.getString(UserInfoActivity.this,"uid",""));
+    }
+
+    //获取用户信息成功的回调
+    @Override
+    public void getUserInfoSuccess(UserInfoBean userInfoBean) {
+        //先清空
+        SpUtil.clearSp(UserInfoActivity.this);
+        //登录成功后把主要信息存入sp
+        SpUtil.saveString(UserInfoActivity.this,"uid",userInfoBean.getData().getUid()+"");
+        SpUtil.saveString(UserInfoActivity.this,"username",userInfoBean.getData().getUsername());
+        SpUtil.saveString(UserInfoActivity.this,"token",userInfoBean.getData().getToken());
+        SpUtil.saveString(UserInfoActivity.this,"mobile",userInfoBean.getData().getMobile());
+        SpUtil.saveString(UserInfoActivity.this,"icon",userInfoBean.getData().getIcon()+"");
+
+        //重新设置本页的头像
+        RequestOptions requestOptions = RequestOptions.circleCropTransform();
+        Glide.with(this).load(SpUtil.getString(UserInfoActivity.this,"icon","")).apply(requestOptions).into(img_tou);
     }
 
     @Override
@@ -135,12 +167,21 @@ public class UserInfoActivity extends BaseActivity<UploadHeaderPresenter> implem
 
     //使用隐式意图打开系统相册
     private void takePictureFromAlum() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//        intent.setType("image/*");
+//        ComponentName componentName = intent.resolveActivity(getPackageManager());
+//        if (componentName != null) {
+//            startActivityForResult(intent, PHOTO_REQUEST_GALLERY);
+//        }
+
+        Intent intent = new Intent();
+        //指定选择/获取的动作...PICK获取,拿
+        intent.setAction(Intent.ACTION_PICK);
+        //指定获取的数据的类型
         intent.setType("image/*");
-        ComponentName componentName = intent.resolveActivity(getPackageManager());
-        if (componentName != null) {
-            startActivityForResult(intent, PHOTO_REQUEST_GALLERY);
-        }
+
+        startActivityForResult(intent,PHOTO_REQUEST_GALLERY);
+
     }
 
 
@@ -173,7 +214,7 @@ public class UserInfoActivity extends BaseActivity<UploadHeaderPresenter> implem
                 break;
 
             case PHOTO_REQUEST_GALLERY:
-                if (requestCode== Activity.RESULT_OK){
+                if (resultCode== Activity.RESULT_OK){
                     Uri data1 = data.getData();
                     startPhotoZoom(data1);
                 }
@@ -184,8 +225,19 @@ public class UserInfoActivity extends BaseActivity<UploadHeaderPresenter> implem
                 Bundle bundle = data.getExtras();
                 if (bundle != null) {
                     photo = bundle.getParcelable("data");
+                    //设置修改后的头像
+                    img_tou.setImageBitmap(photo);
+                    try {
+                        BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(imgcropFile));
+                        photo.compress(Bitmap.CompressFormat.JPEG, 20, bos);
+                        bos.flush();
+                        bos.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                     //上传头像
-                    mPresenter.uploadHeaders(SpUtil.getString(UserInfoActivity.this, "uid", ""), imgPath);
+                    mPresenter.uploadHeaders(SpUtil.getString(UserInfoActivity.this, "uid", ""), imgcropPath);
                 }
                 break;
         }

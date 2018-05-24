@@ -1,6 +1,7 @@
 package com.example.jingdong.ui.mine.presenter;
 
 import com.example.jingdong.bean.BaseBean;
+import com.example.jingdong.bean.UserInfoBean;
 import com.example.jingdong.net.NetApi;
 import com.example.jingdong.ui.base.BasePresenter;
 import com.example.jingdong.ui.mine.contract.UploadHeaderContract;
@@ -50,6 +51,35 @@ public class UploadHeaderPresenter extends BasePresenter<UploadHeaderContract.Vi
 
                     @Override
                     public void onError(Throwable e) {
+                        mView.uploadSuccess(null);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    @Override
+    public void getUserInfo(String uid) {
+
+        netApi.getUserInfo(uid)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Observer<UserInfoBean>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(UserInfoBean userInfoBean) {
+                        mView.getUserInfoSuccess(userInfoBean);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
 
                     }
 
@@ -58,5 +88,7 @@ public class UploadHeaderPresenter extends BasePresenter<UploadHeaderContract.Vi
 
                     }
                 });
+
+
     }
 }

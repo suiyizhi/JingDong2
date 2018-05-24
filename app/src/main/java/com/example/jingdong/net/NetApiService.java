@@ -4,6 +4,7 @@ import com.example.jingdong.bean.BaseBean;
 import com.example.jingdong.bean.GoodsListBean;
 import com.example.jingdong.bean.ShopCarBean;
 import com.example.jingdong.bean.UserBean;
+import com.example.jingdong.bean.UserInfoBean;
 
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
@@ -60,5 +61,10 @@ public interface NetApiService {
     @Multipart
     @POST("file/upload")
     Observable<BaseBean> uploadHeader(@Part("uid") RequestBody uid, @Part MultipartBody.Part file);
+
+    //获取用户信息
+    @FormUrlEncoded
+    @POST("user/getUserInfo")
+    Observable<UserInfoBean> getUserInfo(@Field("uid") String uid);
 
 }
