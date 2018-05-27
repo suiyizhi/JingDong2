@@ -119,7 +119,7 @@ public class UserInfoActivity extends BaseActivity<UploadHeaderPresenter> implem
         SpUtil.saveString(UserInfoActivity.this,"mobile",userInfoBean.getData().getMobile());
         SpUtil.saveString(UserInfoActivity.this,"icon",userInfoBean.getData().getIcon()+"");
 
-        //重新设置本页的头像
+        //重新设置本页的头像3
         RequestOptions requestOptions = RequestOptions.circleCropTransform();
         Glide.with(this).load(SpUtil.getString(UserInfoActivity.this,"icon","")).apply(requestOptions).into(img_tou);
     }
@@ -226,7 +226,7 @@ public class UserInfoActivity extends BaseActivity<UploadHeaderPresenter> implem
                 if (bundle != null) {
                     photo = bundle.getParcelable("data");
                     //设置修改后的头像
-                    img_tou.setImageBitmap(photo);
+//                    img_tou.setImageBitmap(photo);
                     try {
                         BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(imgcropFile));
                         photo.compress(Bitmap.CompressFormat.JPEG, 20, bos);

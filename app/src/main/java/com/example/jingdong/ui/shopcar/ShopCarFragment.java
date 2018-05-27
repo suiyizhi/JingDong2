@@ -1,7 +1,9 @@
 package com.example.jingdong.ui.shopcar;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +12,9 @@ import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import com.example.jingdong.R;
+import com.example.jingdong.activity.ConfirmOrderActivity;
 import com.example.jingdong.bean.BaseBean;
+import com.example.jingdong.bean.JieSuanBean;
 import com.example.jingdong.bean.SellerBean;
 import com.example.jingdong.bean.ShopCarBean;
 import com.example.jingdong.component.DaggerHttpComponent;
@@ -79,6 +83,20 @@ public class ShopCarFragment extends BaseFragment<ShopCarPresenter> implements S
                 }
             }
         });
+        //点击去结算的监听
+        tv_Total.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String[] strings = elvShopCarAdapter.computeMoneyAndNum();
+                List<SellerBean> gList = elvShopCarAdapter.getGroupList();
+                List<List<ShopCarBean.DataBean.ListBean>> cList = elvShopCarAdapter.getChildList();
+                JieSuanBean jieSuanBean = new JieSuanBean(gList, cList,strings[0]);
+                Intent intent = new Intent(getActivity(), ConfirmOrderActivity.class);
+                intent.putExtra("bean",jieSuanBean);
+                startActivity(intent);
+                Log.i("===", "onClick: 123456");
+            }
+        });
     }
 
     @Override
@@ -123,5 +141,7 @@ public class ShopCarFragment extends BaseFragment<ShopCarPresenter> implements S
         }
         return true;
     }
+
+
 
 }

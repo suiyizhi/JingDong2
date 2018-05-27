@@ -67,4 +67,9 @@ public interface NetApiService {
     @POST("user/getUserInfo")
     Observable<UserInfoBean> getUserInfo(@Field("uid") String uid);
 
+    //提交订单
+    @FormUrlEncoded
+    @POST("product/createOrder")
+    Observable<BaseBean> submitOrder(@Field("Uid") String uid, @Field("Price") String price);
+
 }

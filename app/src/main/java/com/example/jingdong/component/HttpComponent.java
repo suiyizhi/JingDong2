@@ -1,5 +1,8 @@
 package com.example.jingdong.component;
 
+
+
+import com.example.jingdong.activity.ConfirmOrderActivity;
 import com.example.jingdong.activity.GoodsListActivity;
 import com.example.jingdong.activity.ListDetailsActivity;
 import com.example.jingdong.activity.LoginActivity;
@@ -30,5 +33,7 @@ public interface HttpComponent {
     void inject(SearchListActivity searchListActivity);
 
     void inject(UserInfoActivity userInfoActivity);
+
+    void inject(ConfirmOrderActivity confirmOrderActivity);
 
 }

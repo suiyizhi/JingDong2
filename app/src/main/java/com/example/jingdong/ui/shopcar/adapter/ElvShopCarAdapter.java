@@ -19,6 +19,7 @@ import com.example.jingdong.ui.shopcar.presenter.ShopCarPresenter;
 import com.example.jingdong.ui.widget.AddSubView;
 import com.example.jingdong.util.SpUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ElvShopCarAdapter extends BaseExpandableListAdapter{
@@ -364,5 +365,37 @@ public class ElvShopCarAdapter extends BaseExpandableListAdapter{
         updateProductInSeller(bool);
     }
 
+    //获取选中的grouplist
+    public List<SellerBean> getGroupList(){
+        List<SellerBean> glist = new ArrayList<>();
+        for (int i = 0; i < groupList.size(); i++) {
+            for (int j = 0; j < childList.get(i).size(); j++) {
+                if (childList.get(i).get(j).getSelected()==1){
+                    if (!glist.contains(groupList.get(i))){
+                        glist.add(groupList.get(i));
+                    }
+                }
+            }
+        }
+        return glist;
+    }
+
+    //获取选中的子列表
+    public List<List<ShopCarBean.DataBean.ListBean>> getChildList(){
+
+        List<List<ShopCarBean.DataBean.ListBean>> clist = new ArrayList<>();
+        for (int i = 0; i < groupList.size(); i++) {
+            List<ShopCarBean.DataBean.ListBean> listBeans = new ArrayList<>();
+            for (int j = 0; j < childList.get(i).size(); j++) {
+                if (childList.get(i).get(j).getSelected()==1){
+                    listBeans.add(childList.get(i).get(j));
+                }
+            }
+            if (listBeans.size()>0){
+                clist.add(listBeans);
+            }
+        }
+        return clist;
+    }
 
 }

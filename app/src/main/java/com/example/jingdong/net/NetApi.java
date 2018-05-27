@@ -72,4 +72,9 @@ public class NetApi {
         return netApiService.getUserInfo(uid);
     }
 
+    //提交订单
+    public Observable<BaseBean> submitOrder(String uid,String price){
+        return netApiService.submitOrder(uid, price);
+    }
+
 }
